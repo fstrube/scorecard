@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Project Scorecard</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<link href="http://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet" type="text/css">
+		<link href="scorecard.css" rel="stylesheet" type="text/css">
+	</head>
+	<body>
+		<div class="wrapper" id="main">
+			<h1>Project Scorecard</h1>
+			<div class="wrapper" id="about">
+				<p><strong>Fill out the form and check the boxes below to generate your score. You can print this page if you need to bring the score to a meeting. If you want to save an electronic version, you can print to a PDF file.</strong></p>
+				<p>The Project Scorecard is a rubric for evaluating the quality of a web project. The checklist calculates a score for your project, and aims to determine if certain areas need more attention.</p>
+				<p>The intended use of this list is to provide a quick way to assess the quality of a web project (without having to dive into code).</p>
+				<p>In a lot of ways it is like "<a href="http://www.joelonsoftware.com/articles/fog0000000043.html">The Joel Test</a>". In fact, some items in the list come directly from Joel's. However, this list is more geared towards our web development projects, whereas The Joel Test evaluates a team of developers.</p>
+			</div>
+			<div class="wrapper" id="info">
+				<a class="print" href="javascript:window.print()" title="print">&#x2399;</a>
+				<input type="text" placeholder="Project Name" />
+				<input type="text" placeholder="Project URL" />
+				<input type="text" placeholder="Team Members" />
+			</div>
+			<div class="box" id="score">
+				<div class="progress"></div>
+				<span>Overall Score: <span class="value">0</span> / <span class="overall">??</span></span>
+			</div>
+			<div class="box" id="scorecard">
+				<!-- content rendered by Handlebars.js -->
+			</div>
+			<div id="references">
+				<h3>Author</h3>
+				<p>Frank Strube &lt;<a href="mailto:fstrube@globalthinking.com">fstrube@globalthinking.com</a>&gt;</p>
+				<h3>References</h3>
+				<ul>
+					<li><a href="http://highered.mcgraw-hill.com/sites/0072853182">Software Engineering: A Practitioner's Approach</a></li>
+					<li><a href="http://www.joelonsoftware.com/articles/fog0000000043.html">The Joel Test: 12 Steps to Better Code</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- BEGIN modal window, hidden by default -->
+		<div id="overlay"></div>
+		<form class="box" id="configure-form">
+			<fieldset>
+				<legend>Configuration</legend>
+				<input placeholder="Enter the item name" type="text" name="title" />
+				<input placeholder="Enter the score value" type="text" name="score" />
+				<textarea placeholder="Enter the description" name="description"></textarea>
+				<button class="save" type="button"><span>Save</span></button>
+				<button class="cancel" type="button"><span>Cancel</span></button>
+			</fieldset>
+		</form>
+		<!-- END modal window -->
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.1.2/handlebars.min.js"></script>
+		<script src="http://code.jquery.com/jquery-2.0.3.min.js" type="text/javascript"></script>
+		<script src="scorecard.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			var context = {
+				"items" : [
+					{"title": "Planning", "items": [
+						{"title": "Proposal", "score": 10},
+						{"title": "Design Brief", "score": 10},
+						{"title": "Technical Spec", "score": 10},
+						{"title": "Usage Documentation", "score": 10}
+					]},
+					{"title": "Production", "items": [
+						{"title": "Wireframes", "items": [
+							{"title": "75 - 100%", "score": 10},
+							{"title": "50 - 75%", "score": 5},
+							{"title": "25 - 50%", "score": 3}
+						]},
+						{"title": "Version Control", "items": [
+							{"title": "Git / Hg", "score": 10},
+							{"title": "SVN", "score": 5},
+							{"title": "Other", "score": 3}
+						]},
+						{"title": "Code Review", "multiselect": true, "items": [
+							{"title": "Informal", "score": 5},
+							{"title": "Formal", "score": 5}
+						]},
+						{"title": "Deployment Strategy", "items": [
+							{"title": "Capistrano", "score": 5},
+							{"title": "Manual, e.g. FTP", "score": 0}
+						]},
+						{"title": "Testing", "multiselect": true, "items": [
+							{"title": "Automated", "score": 5},
+							{"title": "Manual", "score": 5}
+						]}
+					]},
+					{"title": "Support", "items": [
+						{"title": "Logging", "score": 5},
+						{"title": "Error Handling", "score": 5},
+						{"title": "Monitoring, e.g. Pingdom", "score": 5},
+						{"title": "Bug Tracking, e.g. BugDigger", "score": 5}
+					]}
+				]
+			};
+		</script>
+		<script id="scorecard-template" type="text/x-handlebars-template">
+			{{#each items}}
+			<fieldset>
+				<legend>{{title}}</legend>
+				<ul>
+					{{#each items}}
+					<li>
+						<label><span class="title">{{title}}</span> <input {{#if score}}data-score="{{score}}" {{/if}}type="checkbox" {{#if checked}}checked="checked"{{/if}}/></label>
+						{{#if items}}
+						<ul {{#if multiselect}}class="multiselect"{{/if}}>
+							{{#each items}}
+							<li><label><span class="title">{{title}}</span> <input {{#if score}}data-score="{{score}}" {{/if}}type="checkbox" {{#if checked}}checked="checked"{{/if}}/></label></li>
+							{{/each}}
+						</ul>
+						{{/if}}
+					</li>
+					{{/each}}
+				</ul>
+			</fieldset>
+			{{/each}}
+		</script>
+	</body>
+</html>
